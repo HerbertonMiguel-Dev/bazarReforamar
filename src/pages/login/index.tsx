@@ -67,7 +67,7 @@ export function Login() {
   return (
     <Container>
       <div className="w-full min-h-screen flex justify-center items-center flex-col gap-4">
-        <Link to="/" className="mb-6 max-w-sm w-full">
+        <Link to="/" className="mb-6 max-w-xl w-full">
           <img
             src={logoImg}
             alt="Logo do site"
