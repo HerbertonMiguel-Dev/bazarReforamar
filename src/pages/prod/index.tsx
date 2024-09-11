@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Container } from '../../components/container'
 import { FaWhatsapp } from 'react-icons/fa'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { getDoc, doc, } from 'firebase/firestore'
 import { db } from '../../services/firebaseConnection'
+
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 interface ProdProps{
   id: string;
@@ -29,6 +31,8 @@ interface ProdImageProps {
 export function ProdDetail() {
   const { id } = useParams(); 
   const [prod, setProd] = useState<ProdProps>()
+  const [sliderPerView, setSliderPerView] = useState<number>(2);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadProd(){
@@ -37,6 +41,11 @@ export function ProdDetail() {
       const docRef = doc(db, "produtos", id)
       getDoc(docRef)
       .then((snapshot) => {
+
+        if(!snapshot.data()){
+          navigate("/")
+        }
+
         setProd({
           id: snapshot.id,
           name: snapshot.data()?.name,
@@ -57,9 +66,46 @@ export function ProdDetail() {
 
   }, [id])
 
+  useEffect(() => {
+
+    function handleResize(){
+      if(window.innerWidth < 720){
+        setSliderPerView(1);
+      }else{
+        setSliderPerView(2);
+      }
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize)
+
+    return() => {
+      window.removeEventListener("resize", handleResize)
+    }
+
+  }, [])
+
   return (
     <Container>
-      <h1>Pagina Detalhes</h1>
+
+      {prod && (
+          <Swiper
+          slidesPerView={sliderPerView}
+          pagination={{ clickable: true }}
+          navigation
+        >
+          {prod?.images.map( image => (
+            <SwiperSlide key={image.name}>
+              <img
+                src={image.url}
+                className="w-3/4 max-h-96 object-cover"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+      
 
       { prod && (
       <main className="w-full bg-white rounded-lg p-6 my-4">
@@ -80,7 +126,7 @@ export function ProdDetail() {
               <strong>{prod?.forpag}</strong>
             </div> 
           </div>
-          
+
         </div>
 
         <strong>Descrição:</strong>
@@ -91,6 +137,8 @@ export function ProdDetail() {
         <p>{prod?.whatsapp}</p>
 
         <a
+          href={`https://api.whatsapp.com/send?phone=${prod?.whatsapp}&text=Olá vi esse ${prod?.name} no valor  ${prod?.price}de no site Bazar ReforAmar e fique interessado!`}
+          target="_blank"
           className="cursor-pointer bg-green-500 w-full text-white flex items-center justify-center gap-2 my-6 h-11 text-xl rounded-lg font-medium"
         >
           Conversar com vendedor
