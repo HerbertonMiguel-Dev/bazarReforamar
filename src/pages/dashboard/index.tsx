@@ -102,7 +102,7 @@ export function Dashboard() {
           </button>
 
           <img
-            className="w-full rounded-lg mb-2 max-h-70"
+            className="w-full rounded-lg mb-2 max-h-50"
             src={prod.images[0].url}
           />
           <p className="font-bold mt-1 px-2 mb-2">{prod.name}</p>
