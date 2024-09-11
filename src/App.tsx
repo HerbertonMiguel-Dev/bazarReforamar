@@ -5,7 +5,7 @@ import { Login } from './pages/login'
 import { Register } from './pages/register'
 import { Dashboard } from './pages/dashboard'
 import { New } from './pages/dashboard/new'
-import { CarDetail } from './pages/car'
+import { ProdDetail } from './pages/prod'
 
 import { Layout } from './components/layout'
 import { Private } from './routes/Private'
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/prod/:id",
-        element: <CarDetail/>
+        element: <ProdDetail/>
       },
       {
         path: "/dashboard",
