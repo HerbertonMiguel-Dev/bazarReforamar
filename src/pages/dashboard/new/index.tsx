@@ -110,7 +110,7 @@ export function New() {
     })
 
     addDoc(collection(db, "produtos"), {
-      name: data.name,
+      name: data.name.toUpperCase(),
       categoria: data.categoria,
       whatsapp: data.whatsapp,
       medqua: data.medqua,
