@@ -11,6 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signInWithPopup, signInWithEmailAndPassword, signOut } from 'firebase/auth'; // Importar signInWithPopup do Firebase
 import { auth, provider } from '../../services/firebaseConnection' // Importar auth e provider do Firebase
 
+import toast from 'react-hot-toast'
+
 // Validação do formulário
 const schema = z.object({
   email: z.string().email("Insira um email válido").nonempty("O campo email é obrigatório"),
@@ -42,6 +44,7 @@ export function Login() {
       
       console.log('Usuário logado com Google:', user);
       // Armazenar as informações do usuário no localStorage ou redirecionar
+      toast.success("Logado com sucesso!")
       localStorage.setItem('user', JSON.stringify(user));
       // Redirecionar para o dashboard
       window.location.href = '/dashboard'; // ou usar useNavigate do react-router-dom
@@ -56,11 +59,13 @@ export function Login() {
     .then((user) => {
       console.log("LOGADO COM SUCESSO!")
       console.log(user)
+      toast.success("Logado com sucesso!")
       navigate("/dashboard", { replace: true })
     })
     .catch(err => {
       console.log("ERRO AO LOGAR")
       console.log(err);
+      toast.error("Erro ao fazer o login.")
     })
   }
 
