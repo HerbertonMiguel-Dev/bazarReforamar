@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { auth } from '../../services/firebaseConnection'
 import { createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth'
 import { AuthContext } from '../../contexts/AuthContext'
+import toast from 'react-hot-toast'
 
 const schema = z.object({
   name: z.string().nonempty("O campo nome é obrigatório"),
@@ -54,6 +55,7 @@ export function Register() {
       })
 
       console.log("CADASTRADO COM SUCESSO!")
+      toast.success("Bem vindo ao Bem vindo ao Bazar ReforAmar!")
       navigate("/dashboard", { replace: true })
 
     })
